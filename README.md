@@ -13,15 +13,20 @@ product-management-html-skills/
     html-building-blocks-skill/      <- the skill (one folder = one skill)
       SKILL.md                       <- the instructions Claude reads
       html-preferences.csv           <- page, diagram and table rules
-      communication-preferences.csv  <- how replies and working style should go
       assets/
         components.css               <- styles for every block
         components.html              <- demo page with markup for every block
+  instructions-for-claude/           <- rules that apply to ALL your Claude chats, not one skill
+    communication-preferences.csv    <- how replies and working style should go
 ```
 
 | Skill | What it does |
 |---|---|
 | `html-building-blocks-skill` | Builds single-file HTML pages for analysis and comparison documents, using ready-made blocks and a fixed set of style rules. |
+
+| Instructions (not a skill) | What it does |
+|---|---|
+| `instructions-for-claude/communication-preferences.csv` | Rules for how Claude should talk to you and handle work, in every project. See [Part C](#part-c-use-the-communication-rules-in-every-chat). |
 
 ## Choose where you will use it
 
@@ -29,6 +34,7 @@ product-management-html-skills/
 |---|---|
 | Claude Code (the program you start by typing `claude` in a terminal) | [Part A](#part-a-install-in-claude-code) |
 | claude.ai in a web browser, or the Claude desktop app | [Part B](#part-b-install-on-claudeai-or-the-desktop-app) |
+| The communication rules, in every chat on either | [Part C](#part-c-use-the-communication-rules-in-every-chat) |
 
 ---
 
@@ -122,7 +128,7 @@ It is fine if the folder already exists. Nothing is lost.
   dir "$HOME\.claude\skills\html-building-blocks-skill"
   ```
 
-You must see these names in the list: `SKILL.md`, `assets`, `html-preferences.csv`, `communication-preferences.csv`.
+You must see these names in the list: `SKILL.md`, `assets`, `html-preferences.csv`.
 
 **The most common mistake:** if you see another folder named `html-building-blocks-skill` inside the list instead of `SKILL.md`, the skill is one level too deep. Move the files up one level so that `SKILL.md` sits directly inside `html-building-blocks-skill`.
 
@@ -199,15 +205,74 @@ Skills on claude.ai require a paid plan (Pro, Max, Team or Enterprise) according
 
 ---
 
+## Part C: Use the communication rules in every chat
+
+`instructions-for-claude/communication-preferences.csv` is **not a skill**. It holds rules about how Claude should reply to you (short answers, lead with the result, and so on). A CSV file sitting in a folder does nothing by itself. You have to hand it to Claude once, as described below. Pick Part C1 or C2, or do both.
+
+### C1. In Claude Code (terminal)
+
+Claude Code reads one personal instructions file, `~/.claude/CLAUDE.md`, at the start of every session in every folder. You will make that file point at the CSV.
+
+**Step 1.** Do Part A, Steps 1 to 4, so that your terminal is inside the repo folder.
+
+**Step 2.** Copy the CSV next to your personal Claude files. Type this and press Enter:
+
+- **Mac or Linux:**
+  ```
+  mkdir -p ~/.claude && cp instructions-for-claude/communication-preferences.csv ~/.claude/
+  ```
+- **Windows PowerShell:**
+  ```
+  New-Item -ItemType Directory -Force "$HOME\.claude"; Copy-Item instructions-for-claude\communication-preferences.csv "$HOME\.claude\"
+  ```
+
+**Step 3.** Add one line to `~/.claude/CLAUDE.md` that tells Claude to load the CSV. Type this and press Enter. The `>>` adds the line to the end of the file and creates the file if it does not exist, so nothing already in it is erased:
+
+- **Mac or Linux:**
+  ```
+  printf '\nFollow the reply and working-style rules in this file:\n@~/.claude/communication-preferences.csv\n' >> ~/.claude/CLAUDE.md
+  ```
+- **Windows PowerShell:**
+  ```
+  Add-Content "$HOME\.claude\CLAUDE.md" "`nFollow the reply and working-style rules in this file:`n@~/.claude/communication-preferences.csv"
+  ```
+
+The line starting with `@` is Claude Code's way of saying "load this file too".
+
+**Step 4.** Start Claude Code (type `claude`), then type `/memory` and press Enter. The list must show `~/.claude/CLAUDE.md` and the CSV file. If the CSV is missing from the list, repeat Step 3 and check that the file name is spelled exactly as above.
+
+**Step 5.** Ask Claude: `What reply rules are you following?` It should describe rules from the CSV.
+
+### C2. On claude.ai or the desktop app
+
+Claude.ai has a box for personal preferences that applies to all your chats.
+
+1. Open `instructions-for-claude/communication-preferences.csv` in Excel, Numbers or Google Sheets.
+2. Select every cell in the column named `preference`, and copy them.
+3. In claude.ai, click your name or initials, then **Settings**, then **Profile**.
+4. Find the box named **What personal preferences should Claude consider in responses?** (the wording may differ) and paste.
+5. Click **Save**.
+6. Start a new chat. Previous chats do not pick up the change.
+
+If the box refuses the paste because it is too long, paste only the rows whose `applies_to` column says `all replies` or `all tasks`. Those are the general rules; the rest are narrower.
+
+These menu names are from Anthropic's help pages and may have changed. Use the closest match on your screen.
+
+### Change the rules
+
+Edit the CSV (see "Make it yours" below), then repeat Step 2 of C1 and replace the old file. Step 3 does not need repeating. For C2, paste again.
+
+---
+
 ## Make it yours
 
 The two CSV files hold the rules that the skill follows. They are one person's preferences, written in that person's own words. Change them to fit you.
 
-1. Open `html-preferences.csv` or `communication-preferences.csv` in Excel, Numbers or Google Sheets.
+1. Open `html-preferences.csv` (inside the skill folder) or `instructions-for-claude/communication-preferences.csv` in Excel, Numbers or Google Sheets.
 2. Each row is one rule. The most important columns are `preference` (the rule) and `how_to_apply` (what Claude does).
 3. Change a rule, add a row at the bottom, or delete a row.
 4. Save the file as **CSV** (not Excel format), with the same file name.
-5. Copy the whole skill folder to `~/.claude/skills/` again (Part A, Step 6). Replace the old files if asked.
+5. For `html-preferences.csv`: copy the whole skill folder to `~/.claude/skills/` again (Part A, Step 6) and replace the old files if asked. For `communication-preferences.csv`: follow Part C.
 
 `SKILL.md` lists the main rules in a table. If you change a rule that is also in that table, change it there too.
 

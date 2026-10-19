@@ -12,7 +12,6 @@ Reusable blocks and house rules for explainer and analysis pages. Layer this on 
 - `assets/components.css`: styles for every block, with light and dark themes.
 - `assets/components.html`: markup for every block, as one demo page. Copy the block you need and keep its class names.
 - `html-preferences.csv`: page design, diagram, table, code-sample and accuracy rules, with the user's own words. Read it when a rule below needs detail or a case is not covered.
-- `communication-preferences.csv`: how the user wants replies written and work handled (style, tone, planning, scope, collaboration). Apply it to chat replies and working style, not to page content.
 
 ## Workflow
 
