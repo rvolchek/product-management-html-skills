@@ -1,0 +1,193 @@
+<!-- html-building-blocks: markup for every block. Styles are in components.css.
+     For a single-file artifact, paste components.css inside <style> in the page head.
+     Replace the sample text. Keep the class names so the styles apply. -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HTML Building Blocks</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<link rel="stylesheet" href="components.css">
+</head>
+<body>
+<main>
+
+  <!-- 1. Placeholder: a planned section that is not written yet -->
+  <section class="block" aria-labelledby="sum-h">
+    <h2 id="sum-h">Summary and the ask</h2>
+    <div class="placeholder"><span class="ph-tag">PLACEHOLDER</span>What this analysis found, in a few sentences, and what we want from the reader.</div>
+  </section>
+
+  <!-- 2. Comparison table: first thing on the page. Tint the key-difference row with class="key". -->
+  <section class="block" aria-labelledby="cmp-h">
+    <h2 id="cmp-h">Tool A vs Tool B orientation</h2>
+    <p>Column A: tool A, version 2 only. Column B: tool B, version 3 only.</p>
+    <table class="cmp">
+      <colgroup><col class="c1"><col class="c2"><col class="c3"></colgroup>
+      <thead><tr><th scope="col">Concept</th><th scope="col">Tool A</th><th scope="col">Tool B</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">One step</th><td><code>@a.step</code></td><td><code>@b.task</code></td></tr>
+        <tr class="key"><th scope="row">Graph is built</th><td>At compile time</td><td>At run time</td></tr>
+        <tr><th scope="row">Pick a runner (the runner decides how and where each step runs)</th><td>Subprocess or Docker</td><td>No choice to make</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 3. Two columns side by side, each holding notebook chunks. Comments name the matching table row. -->
+  <section class="block" aria-labelledby="hw-h">
+    <h2 id="hw-h">Hello world, both ways</h2>
+    <p>The same program in each tool. Comments name the matching table row.</p>
+    <div class="two-col">
+      <div class="col-card">
+        <h3>Tool A</h3>
+        <div class="nb-cell"><span class="nb-prompt">In [ ]:</span><pre>from a import step
+
+@step(image=<span class="s">"python:3.11"</span>)   <span class="c"># one step, image</span>
+def add(x: int) -&gt; int:
+    return x + 1</pre></div>
+      </div>
+      <div class="col-card">
+        <h3>Tool B</h3>
+        <div class="nb-cell"><span class="nb-prompt">In [ ]:</span><pre>import b
+
+env = b.Env(image=<span class="s">"auto"</span>)    <span class="c"># image</span>
+
+@env.task                     <span class="c"># one step</span>
+def add(x: int) -&gt; int:
+    return x + 1</pre></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Option cards: rows are setup types, columns are products. Featured card gets a green border. -->
+  <section class="block" aria-labelledby="paths-h">
+    <h2 id="paths-h">Ways to get running locally</h2>
+    <div class="paths">
+      <span></span><span class="colhd">Tool A</span><span class="colhd">Tool B</span>
+
+      <span class="rowhd">Without a cluster</span>
+      <div class="path">
+        <div class="path-top"><span class="who">Tool A</span><span class="tag-loe loe-med">[LOE: Med]</span></div>
+        <h3><code>a.local</code></h3>
+        <ol class="steps">
+          <li><span><code>pip install a</code></span></li>
+          <li><span>Add <code>local.init(...)</code> to your code</span></li>
+        </ol>
+        <p class="gist">A code change and a runner choice.</p>
+      </div>
+      <div class="path featured">
+        <div class="path-top"><span class="who">Tool B</span><span class="tag-loe loe-xlow">[LOE: XLow]</span></div>
+        <h3>Fully local</h3>
+        <ol class="steps">
+          <li><span><code>pip install b</code></span></li>
+          <li><span><code>b run --local app.py</code></span></li>
+        </ol>
+        <p class="gist">One flag. No code change.</p>
+      </div>
+
+      <span class="rowhd">With a cluster</span>
+      <div class="path">
+        <div class="path-top"><span class="who">Tool A</span><span class="tag-loe loe-high">[LOE: High]</span></div>
+        <h3>Your own cluster</h3>
+        <ol class="steps"><li><span>Make a cluster</span></li><li><span>Install the platform</span></li></ol>
+        <p class="gist">You build and connect it yourself.</p>
+      </div>
+      <div class="path featured">
+        <div class="path-top"><span class="who">Tool B</span><span class="tag-loe loe-low">[LOE: Low]</span></div>
+        <h3>One-line cluster</h3>
+        <ol class="steps"><li><span><code>b start cluster</code></span></li></ol>
+        <p class="gist">The cluster and the platform in one command.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Collapsible: native details, closed by default. The unverified tag goes FIRST in the h2.
+          Use one details element per section so each button toggles only its own section. -->
+  <details class="collapsible" aria-labelledby="dev-h">
+    <summary><span class="toggle" aria-hidden="true"></span><h2 id="dev-h"><span class="tag-warn">[UNVERIFIED SLOP]</span> Local development, step by step</h2></summary>
+    <p>Say what was checked and what was not run. Remove this line if nothing was checked, and never claim both.</p>
+    <table class="cmp">
+      <colgroup><col class="c1"><col class="c2"><col class="c3"></colgroup>
+      <thead><tr><th scope="col">Step</th><th scope="col">Tool A</th><th scope="col">Tool B</th></tr></thead>
+      <tbody><tr><th scope="row">Install</th><td><code>pip install a</code></td><td><code>pip install b</code></td></tr></tbody>
+    </table>
+  </details>
+
+  <!-- 6. Heading for the key takeaway: "Key Insight A:" prefix, then your user's exact wording -->
+  <h1>Key Insight A: One sentence in the user's own words</h1>
+  <p>One or two sentences that set up the diagram.</p>
+
+  <!-- 7. Two-zone diagram: green user-facing column, gray backend column, dashed row dividers,
+          labels inside boxes, three labeled sub-boxes per mode. Wider than a phone, so the wrapper scrolls. -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 1190 540" role="img" aria-label="Two columns. User facing: a run command and a task call. Backend: a router that sends each call to a local or a remote handler.">
+      <defs>
+        <marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill: var(--line)"/></marker>
+        <marker id="head-local" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill: var(--local)"/></marker>
+        <marker id="head-remote" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill: var(--accent)"/></marker>
+      </defs>
+
+      <rect x="10" y="8" width="440" height="522" rx="10" class="col-user"/>
+      <rect x="460" y="8" width="720" height="522" rx="10" class="col-internal"/>
+      <text x="30" y="34" class="colhead t-user">USER FACING</text>
+      <text x="480" y="34" class="colhead muted">BACKEND</text>
+      <text x="30" y="62" class="zone">STARTUP (ONE TIME)</text>
+      <line x1="10" y1="170" x2="1180" y2="170" class="divider"/>
+      <text x="30" y="192" class="zone">EACH CALL</text>
+
+      <rect x="80" y="76" width="350" height="80" rx="3" class="cell"/>
+      <text x="22" y="102" class="mono prompt" font-size="12">In [ ]:</text>
+      <text x="92" y="102" class="mono" font-size="13">!app run <tspan class="str">--local</tspan> main.py</text>
+      <text x="92" y="124" class="mono cmt" font-size="13"># remote: drop --local</text>
+      <path d="M430,116 L591,116" class="arrow"/>
+      <rect x="595" y="76" width="450" height="80" rx="6" class="box-core"/>
+      <text x="820" y="122" text-anchor="middle" class="mono" font-size="16" font-weight="600">create_router("local" | "remote")</text>
+
+      <rect x="80" y="204" width="350" height="70" rx="3" class="cell"/>
+      <text x="22" y="232" class="mono prompt" font-size="12">In [ ]:</text>
+      <text x="92" y="232" class="mono" font-size="13">result = await my_task(item)</text>
+      <text x="92" y="256" class="mono cmt" font-size="13"># one call to my_task</text>
+      <path d="M430,239 L591,239" class="arrow"/>
+      <rect x="595" y="204" width="450" height="70" rx="6" class="box-core"/>
+      <text x="820" y="234" text-anchor="middle" class="mono" font-size="16" font-weight="600">router.submit(task, *args)</text>
+      <text x="820" y="257" text-anchor="middle" class="muted" font-size="13">Same verb each time. The task does not know where it runs.</text>
+
+      <path d="M760,274 L655,296" class="arrow-local"/>
+      <path d="M880,274 L985,296" class="arrow-remote"/>
+
+      <rect x="480" y="300" width="330" height="220" rx="6" class="box-local"/>
+      <text x="496" y="328" class="mono t-local" font-size="16" font-weight="600">LocalHandler</text>
+      <text x="496" y="348" class="muted" font-size="13">when: no backend configured, or --local</text>
+      <rect x="492" y="360" width="306" height="44" rx="4" class="sub"/>
+      <text x="504" y="377" class="sublabel">INPUTS</text>
+      <text x="504" y="395" font-size="13">Passed in memory</text>
+      <rect x="492" y="412" width="306" height="44" rx="4" class="sub"/>
+      <text x="504" y="429" class="sublabel">RUNS IN</text>
+      <text x="504" y="447" font-size="13">This process</text>
+      <rect x="492" y="464" width="306" height="44" rx="4" class="sub"/>
+      <text x="504" y="481" class="sublabel">OUTPUTS</text>
+      <text x="504" y="499" font-size="13">Returned in memory</text>
+
+      <rect x="830" y="300" width="330" height="220" rx="6" class="box-remote"/>
+      <text x="846" y="328" class="mono t-remote" font-size="16" font-weight="600">RemoteHandler</text>
+      <text x="846" y="348" class="muted" font-size="13">when: the task runs in a cluster</text>
+      <rect x="842" y="360" width="306" height="44" rx="4" class="sub"/>
+      <text x="854" y="377" class="sublabel">INPUTS</text>
+      <text x="854" y="395" font-size="13">Uploaded to object storage</text>
+      <rect x="842" y="412" width="306" height="44" rx="4" class="sub"/>
+      <text x="854" y="429" class="sublabel">RUNS IN</text>
+      <text x="854" y="447" font-size="13">New pod</text>
+      <rect x="842" y="464" width="306" height="44" rx="4" class="sub"/>
+      <text x="854" y="481" class="sublabel">OUTPUTS</text>
+      <text x="854" y="499" font-size="13">Downloaded from object storage</text>
+    </svg>
+  </div>
+
+  <ul>
+    <li>Sources: list the files or docs that were checked, and say what was not run.</li>
+  </ul>
+
+</main>
+</body>
+</html>
